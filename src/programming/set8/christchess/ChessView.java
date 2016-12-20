@@ -74,6 +74,8 @@ public class ChessView {
 
 	public void updateValidMoves(ChessData cd, ChessPiece cp) {
 		if (cp != null) {
+			//show selection in yellow
+			//fields[cp.getX()][cp.getY()].setFillColor(Color.YELLOW);
 			List<GPoint> vm = cp.getValidTargetSquares(cd);
 			for (GPoint gp : vm) {
 				int x = (int) gp.getX(),

@@ -11,6 +11,17 @@ public enum FigureLogic {
 		public boolean isValidMove(ChessPiece cp, ChessData cd, int x, int y) {
 			int dx = Math.abs(x - cp.getX());
 			int dy = Math.abs(y - cp.getY());
+
+			if (y < cp.getY()) {
+				if (cp.getPlayer() == References.PLAYER2) {
+					return false;
+				}
+			} else {
+				if (cp.getPlayer() == References.PLAYER1) {
+					return false;
+				}
+			}
+
 			if (dx != 0) {
 				if (dx == 1 && dy == 1) {
 					if (cd.getPieceAt(x, y) != null) {
@@ -20,24 +31,13 @@ public enum FigureLogic {
 			} else {
 				if (cd.getPieceAt(x, y) == null) {
 					if (dy == 1) {
-						if (y > cp.getY()) {
-							if (cp.getPlayer() == References.PLAYER1) {
-								return true;
-							}
-						} else {
-							if (cp.getPlayer() ==  References.PLAYER2) {
-								return true;
-							}
-						}
+						return true;
 					} else if (dy == 2) {
-						if (y > cp.getY()) {
-							if (cp.getPlayer() == References.PLAYER1 && cp.getY() == 1) {
-								return true;
-							}
-						} else {
-							if (cp.getPlayer() ==  References.PLAYER2 && cp.getY() == 6) {
-								return true;
-							}
+						if (cp.getPlayer() == References.PLAYER1 && cp.getY() == 6) {
+							return true;
+						}
+						if (cp.getPlayer() == References.PLAYER2 && cp.getY() == 1) {
+							return true;
 						}
 					}
 				}

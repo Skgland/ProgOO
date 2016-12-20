@@ -2,56 +2,64 @@ package programming.set8.christchess;
 
 import acm.graphics.GPoint;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Bennet Blessmann
  *         Created on 19.12.2016.
  */
 public class ChessData implements Cloneable {
 
-
-	private ChessPiece[][] CHESS_PIECE_ARRAY = new ChessPiece[8][8];
-
-	private int activePlayer =  References.PLAYER1;
+	private List<ChessPiece> pieces = new ArrayList<>();
+	private int activePlayer = References.PLAYER1;
 
 	public void initNewGame() {
+
+		removeAllPieces();
+
 		for (int i = 0; i < 8; i++) {
-			addNewPiece(References.PAWN,  References.PLAYER1, i, 1);
-			addNewPiece(References.PAWN,  References.PLAYER2, i, 6);
+			addNewPiece(References.PAWN, References.PLAYER1, i, 6);
+			addNewPiece(References.PAWN, References.PLAYER2, i, 1);
 		}
 
-		addNewPiece(References.KING,  References.PLAYER1, 3, 0);
-		addNewPiece(References.KING,  References.PLAYER2, 3, 7);
+		addNewPiece(References.KING, References.PLAYER1, 3, 7);
+		addNewPiece(References.KING, References.PLAYER2, 3, 0);
 
-		addNewPiece(References.QUEEN,  References.PLAYER1, 4, 0);
-		addNewPiece(References.QUEEN,  References.PLAYER2, 4, 7);
+		addNewPiece(References.QUEEN, References.PLAYER1, 4, 7);
+		addNewPiece(References.QUEEN, References.PLAYER2, 4, 0);
 
-		addNewPiece(References.ROOK,  References.PLAYER1, 0, 0);
-		addNewPiece(References.ROOK,  References.PLAYER1, 7, 0);
-		addNewPiece(References.ROOK,  References.PLAYER2, 0, 7);
-		addNewPiece(References.ROOK,  References.PLAYER2, 7, 7);
+		addNewPiece(References.ROOK, References.PLAYER1, 0, 7);
+		addNewPiece(References.ROOK, References.PLAYER1, 7, 7);
+		addNewPiece(References.ROOK, References.PLAYER2, 0, 0);
+		addNewPiece(References.ROOK, References.PLAYER2, 7, 0);
 
-		addNewPiece(References.KNIGHT,  References.PLAYER1, 1, 0);
-		addNewPiece(References.KNIGHT,  References.PLAYER1, 6, 0);
-		addNewPiece(References.KNIGHT,  References.PLAYER2, 1, 7);
-		addNewPiece(References.KNIGHT,  References.PLAYER2, 6, 7);
+		addNewPiece(References.KNIGHT, References.PLAYER1, 1, 7);
+		addNewPiece(References.KNIGHT, References.PLAYER1, 6, 7);
+		addNewPiece(References.KNIGHT, References.PLAYER2, 1, 0);
+		addNewPiece(References.KNIGHT, References.PLAYER2, 6, 0);
 
-		addNewPiece(References.BISHOP,  References.PLAYER1, 2, 0);
-		addNewPiece(References.BISHOP,  References.PLAYER1, 5, 0);
-		addNewPiece(References.BISHOP,  References.PLAYER2, 2, 7);
-		addNewPiece(References.BISHOP,  References.PLAYER2, 5, 7);
+		addNewPiece(References.BISHOP, References.PLAYER1, 2, 7);
+		addNewPiece(References.BISHOP, References.PLAYER1, 5, 7);
+		addNewPiece(References.BISHOP, References.PLAYER2, 2, 0);
+		addNewPiece(References.BISHOP, References.PLAYER2, 5, 0);
 	}
 
 	public void addNewPiece(int type, int player, int x, int y) {
-		CHESS_PIECE_ARRAY[x][y] = new ChessPiece(type, player, x, y);
+		pieces.add(new ChessPiece(type, player, x, y));
 	}
 
 	public void removeAllPieces() {
-		CHESS_PIECE_ARRAY = new ChessPiece[8][8];
+		pieces.clear();
 	}
 
 	public ChessPiece getPieceAt(int x, int y) {
 		if (x >= 0 && 7 >= x && y >= 0 && 7 >= y) {
-			return CHESS_PIECE_ARRAY[x][y];
+			for (ChessPiece cp : pieces) {
+				if ((cp.getX() == x) && (cp.getY() == y)) {
+					return cp;
+				}
+			}
 		}
 		return null;
 	}
@@ -77,13 +85,15 @@ public class ChessData implements Cloneable {
 		if (cp == null) {
 			return false;
 		}
-		if (CHESS_PIECE_ARRAY[cp.getX()][cp.getY()] == cp) {
+
+		if (pieces.contains(cp)) {
 			if (activePlayer == cp.getPlayer()) {
-				if (cp.getValidTargetSquares(this).size() > 0) {
+				if (!cp.getValidTargetSquares(this).isEmpty()) {
 					return true;
 				}
 			}
 		}
+
 		return false;
 	}
 
@@ -92,9 +102,10 @@ public class ChessData implements Cloneable {
 	}
 
 	public ChessPiece movePieceTo(ChessPiece piece, int x, int y) {
-		ChessPiece captured = CHESS_PIECE_ARRAY[x][y];
-		CHESS_PIECE_ARRAY[x][y] = new ChessPiece(piece.getType(), piece.getPlayer(), x, y);
-		CHESS_PIECE_ARRAY[piece.getX()][piece.getY()] = null;
+		ChessPiece captured;
+		captured = getPieceAt(x, y);
+		pieces.remove(captured);
+		piece.moveTo(x, y);
 		return captured;
 	}
 
@@ -103,19 +114,16 @@ public class ChessData implements Cloneable {
 	}
 
 	public void togglePlayer() {
-		activePlayer = activePlayer ==  References.PLAYER1 ?  References.PLAYER2 :  References.PLAYER1;
+		activePlayer = activePlayer == References.PLAYER1 ? References.PLAYER2 : References.PLAYER1;
 	}
 
 	public int isCheckmate() {
-		ChessPiece cur;
-		outer: for (int i = 1; i < 3; i++) {
+		outer:
+		for (int i = 1; i < 3; i++) {
 			if (isInCheck(i)) {
-				for (int x = 0; x < 8; x++) {
-					for (int y = 0; y < 8; y++) {
-						cur = getPieceAt(x, y);
-						if (cur != null && (cur.getPlayer() == i) && !cur.getValidTargetSquares(this).isEmpty()) {
-						 break outer;
-						}
+				for(ChessPiece cur:pieces){
+					if (cur != null && (cur.getPlayer() == i) && !cur.getValidTargetSquares(this).isEmpty()) {
+						continue outer;
 					}
 				}
 				return i;
@@ -126,19 +134,12 @@ public class ChessData implements Cloneable {
 
 	public boolean isInCheck(int player) {
 		ChessPiece king = null;
-		ChessPiece current;
 		//find the king
-		outer:
-		for (int i = 0; i < 8; i++) {
-			for (int ii = 0; ii < 8; ii++) {
-				current = CHESS_PIECE_ARRAY[i][ii];
-				if (current != null) {
-					if (current.getType() == References.KING) {
-						if (current.getPlayer() == player) {
-							king = current;
-							break outer;
-						}
-					}
+		for (ChessPiece current : pieces) {
+			if (current.getType() == References.KING) {
+				if (current.getPlayer() == player) {
+					king = current;
+					break;
 				}
 			}
 		}
@@ -148,15 +149,10 @@ public class ChessData implements Cloneable {
 		}
 
 		//check if the king can be attacked
-		for (int i = 0; i < 8; i++) {
-			for (int ii = 0; ii < 8; ii++) {
-				current = CHESS_PIECE_ARRAY[i][ii];
-				if (current != null) {
-					if (current.getPlayer() != player) {
-						if (FigureLogic.values()[current.getType()].isValidMove(current, this, king.getX(), king.getY())) {
-							return true;
-						}
-					}
+		for (ChessPiece current : pieces) {
+			if (current.getPlayer() != player) {
+				if (FigureLogic.values()[current.getType()].isValidMove(current, this, king.getX(), king.getY())) {
+					return true;
 				}
 			}
 		}
@@ -172,11 +168,10 @@ public class ChessData implements Cloneable {
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		ChessData cd = (ChessData) super.clone();
-		cd.CHESS_PIECE_ARRAY = new ChessPiece[8][8];
-		for (int i = 0; i < 8; i++) {
-			for (int ii = 0; ii < 8; ii++) {
-				cd.CHESS_PIECE_ARRAY[i][ii] = CHESS_PIECE_ARRAY[i][ii];
-			}
+		cd.pieces = new ArrayList<>();
+
+		for (ChessPiece cp : pieces) {
+			cd.pieces.add(new ChessPiece(cp.getType(), cp.getPlayer(), cp.getX(), cp.getY()));
 		}
 		return cd;
 	}

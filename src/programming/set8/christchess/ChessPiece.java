@@ -36,7 +36,7 @@ public class ChessPiece {
 					if(FigureLogic.values()[iType].isValidMove(this,cd,i,ii)){
 						try {
 							ChessData testData = (ChessData) cd.clone();
-							testData.movePieceTo(this,i,ii);
+							testData.movePieceTo(testData.getPieceAt(getX(),getY()),i,ii);
 							if(!testData.isInCheck(iPlayer)){
 								gpl.add(new GPoint(i,ii));
 							}
@@ -65,6 +65,11 @@ public class ChessPiece {
 
 	public int getType() {
 		return iType;
+	}
+
+	public void moveTo(int x,int y){
+		iX = x;
+		iY = y;
 	}
 
 	@Override
