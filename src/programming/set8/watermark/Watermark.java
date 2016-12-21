@@ -9,6 +9,7 @@ import java.awt.*;
  * @author Bennet Blessmann
  *         Created on 20.12.2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class Watermark extends GraphicsProgram {
 
 	/**
@@ -33,10 +34,11 @@ public class Watermark extends GraphicsProgram {
 	public static final int PIXEL_BLEND_MASK = 0x80ffffff;
 
 
-	public void run(){
+	public void run() {
 		GImage orig = new GImage(IMAGE_NAME);
 		GImage water = new GImage(WATERMARK_IMAGE_NAME);
-		add(createWatermarkGImage(createScaledGImage(orig,WIDTH,HEIGHT),createScaledGImage(water,WIDTH,HEIGHT)));
+		setSize(WIDTH, HEIGHT);
+		add(createWatermarkGImage(createScaledGImage(orig, WIDTH, HEIGHT), createScaledGImage(water, WIDTH, HEIGHT)));
 	}
 
 	/**
@@ -48,7 +50,7 @@ public class Watermark extends GraphicsProgram {
 	 * @return the new GImage object.
 	 */
 	public GImage createScaledGImage(GImage image, double width, double height) {
-		return new GImage(image.getImage().getScaledInstance((int)width,(int)height, Image.SCALE_DEFAULT));
+		return new GImage(image.getImage().getScaledInstance((int) width, (int) height, Image.SCALE_DEFAULT));
 	}
 
 	/**
@@ -63,15 +65,10 @@ public class Watermark extends GraphicsProgram {
 		int[][] ipa = image.getPixelArray();
 		int[][] wpa = watermark.getPixelArray();
 
-		int curMask;
-		//ohne alpha channel
-		final int invert = 0xffffff;
-		for(int i = 0;i<wpa.length&&i<ipa.length;i++){
-			for(int ii = 0;ii<wpa[i].length&&ii<ipa[i].length;ii++){
-				curMask = wpa[i][ii];
-				if((curMask|invert)!=curMask) {
-					ipa[i][ii] = convertARGBtoRGB(ipa[i][ii]&((curMask^invert)&PIXEL_BLEND_MASK))^invert;
-				}
+
+		for (int i = 0; i < wpa.length && i < ipa.length; i++) {
+			for (int ii = 0; ii < wpa[i].length && ii < ipa[i].length; ii++) {
+				ipa[i][ii] = ipa[i][ii] & convertARGBtoRGB(wpa[i][ii] & PIXEL_BLEND_MASK);
 			}
 		}
 
@@ -87,10 +84,18 @@ public class Watermark extends GraphicsProgram {
 	 * @return the color in the RGB domain.
 	 */
 	public static int convertARGBtoRGB(int argbValue) {
-		int b = (int)((argbValue&0xFF)*((double)(argbValue>>24)/0xff)+0xff*(1.0-((double)(argbValue>>24)/0xff)));
-		int g = (int)(((argbValue>>8)&0xFF)*((double)(argbValue>>24)/0xff)+0xff*(1.0-((double)(argbValue>>24)/0xff)));
-		int r = (int)(((argbValue>>16)&0xFF)*((double)(argbValue>>24)/0xff)+0xff*(1.0-((double)(argbValue>>24)/0xff)));
-		return 0xff000000|(r<<16)|(g<<8)|b;
+
+		double alpha = ((argbValue >> 24) & 0xff) / (double) 0xff;
+
+		int oldb = (argbValue & 0xFF);
+		int oldg = ((argbValue >> 8) & 0xFF);
+		int oldr = ((argbValue >> 16) & 0xFF);
+
+		int b = (int) (oldb * alpha + 0xff * (1.0 - alpha));
+		int g = (int) (oldg * alpha + 0xff * (1.0 - alpha));
+		int r = (int) (oldr * alpha + 0xff * (1.0 - alpha));
+
+		return 0xff000000 | (r << 16) | (g << 8) | b;
 	}
 
 
