@@ -9,6 +9,12 @@ public class LinkedElement<T> {
 	private T value;
 	private LinkedElement<T> next;
 
+	public LinkedElement(T val){
+		value = val;
+	}
+
+	public LinkedElement(){}
+
 	/**
 	 * Returns the value of the i-th linked element.
 	 *

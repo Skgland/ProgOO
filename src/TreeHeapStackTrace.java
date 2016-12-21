@@ -34,7 +34,7 @@ import acm.program.GraphicsProgram;
  *                    if an object is determined to have no accessible reference than the object will be removed from
  *                    memory and freeing the space for other objects this
   * */
-public class Tree extends GraphicsProgram {
+public class TreeHeapStackTrace extends GraphicsProgram {
 
 	private static final int OBJECT_SIZE = 20;
 	private static final int FRAME_SIZE = 28;
