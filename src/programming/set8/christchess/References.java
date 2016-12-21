@@ -6,6 +6,7 @@ package programming.set8.christchess;
  *
  *         Constants go in here
  */
+@SuppressWarnings("WeakerAccess")
 public class References {
 
 	public static final int PAWN = 0;

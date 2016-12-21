@@ -5,6 +5,7 @@ import acm.program.GraphicsProgram;
 /**
  * Created by stu201758 on 11/19/16.
  */
+@SuppressWarnings("SpellCheckingInspection")
 public class Christchess extends GraphicsProgram {
 
 	public void run() {

@@ -9,6 +9,7 @@ import java.util.List;
  * @author Bennet Blessmann
  *         Created on 19.12.2016.
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class ChessData implements Cloneable {
 
 	private List<ChessPiece> pieces = new ArrayList<>();

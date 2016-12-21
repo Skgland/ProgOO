@@ -115,11 +115,8 @@ public enum FigureLogic {
 			int dx = Math.abs(x - cp.getX());
 			int dy = Math.abs(y - cp.getY());
 
-			if (dx <= 1 && dy <= 1) {
-				return true;
-			}
+			return dx <= 1 && dy <= 1;
 
-			return false;
 		}
 	};
 

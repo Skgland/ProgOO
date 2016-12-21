@@ -12,6 +12,7 @@ import java.util.List;
  * @author Bennet Blessmann
  *         Created on 19.12.2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class ChessView {
 
 	GCanvas GC;
@@ -32,13 +33,13 @@ public class ChessView {
 			}
 		}
 		for (int i = 0; i < 8; i++) {
-			//links
+			//left
 			label[0][i] = new GLabel("" + (char) ('8' - i),   References.FIELD_SIZE / 2, (i + 1) *   References.FIELD_SIZE +   References.FIELD_SIZE / 2);
-			//rechts
+			//rights
 			label[1][i] = new GLabel("" + (char) ('8' - i),   References.FIELD_SIZE * 9 +   References.FIELD_SIZE / 2, (i + 1) *   References.FIELD_SIZE +   References.FIELD_SIZE / 2);
-			//oben
+			//bottom
 			label[2][i] = new GLabel("" + (char) ('A' + i), (i + 1) *   References.FIELD_SIZE +   References.FIELD_SIZE / 2,   References.FIELD_SIZE / 2);
-			//unten
+			//top
 			label[3][i] = new GLabel("" + (char) ('A' + i), (i + 1) *   References.FIELD_SIZE +   References.FIELD_SIZE / 2,   References.FIELD_SIZE / 2 +   References.FIELD_SIZE * 9);
 		}
 

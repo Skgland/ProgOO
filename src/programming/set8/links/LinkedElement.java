@@ -4,6 +4,7 @@ package programming.set8.links;
  * @author Bennet Blessmann
  *         Created on 19.12.2016.
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class LinkedElement<T> {
 
 	private T value;

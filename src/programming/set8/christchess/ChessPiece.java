@@ -9,11 +9,17 @@ import java.util.List;
  * @author Bennet Blessmann
  *         Created on 19.12.2016.
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class ChessPiece {
 
 	private int iType;
 	private int iPlayer;
 	private int iX, iY;
+
+	/**
+	 * used if I would implement Rochade or En Passant
+	 * */
+	@SuppressWarnings("SpellCheckingInspection")
 	private int special;
 	private boolean notify;
 
