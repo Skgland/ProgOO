@@ -2,7 +2,6 @@ package programming.set8.christchess;
 
 import acm.graphics.GCanvas;
 import acm.graphics.GLabel;
-import acm.graphics.GPoint;
 import acm.graphics.GRect;
 
 import java.awt.*;
@@ -77,8 +76,8 @@ public class ChessView {
 		if (cp != null) {
 			//show selection in yellow
 			//fields[cp.getX()][cp.getY()].setFillColor(Color.YELLOW);
-			List<GPoint> vm = cp.getValidTargetSquares(cd);
-			for (GPoint gp : vm) {
+			List<Point> vm = cp.getValidTargetSquares(cd);
+			for (Point gp : vm) {
 				int x = (int) gp.getX(),
 						y = (int) gp.getY();
 				fields[x][y].setFillColor(cd.getPieceAt(x, y) == null ? Color.GREEN : Color.RED);

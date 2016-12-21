@@ -1,7 +1,6 @@
 package programming.set8.christchess;
 
-import acm.graphics.GPoint;
-
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +10,16 @@ import java.util.List;
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class ChessPiece {
+
+	/**
+	 * fuck you test
+	 * */
+	public static final int PAWN = References.PAWN;
+	public static final int KNIGHT = References.KNIGHT;
+	public static final int BISHOP = References.BISHOP;
+	public static final int ROOK = References.ROOK;
+	public static final int QUEEN = References.QUEEN;
+	public static final int KING = References.KING;
 
 	private int iType;
 	private int iPlayer;
@@ -30,8 +39,8 @@ public class ChessPiece {
 		iY = y;
 	}
 
-	public List<GPoint> getValidTargetSquares(ChessData cd) {
-		List<GPoint> gpl = new ArrayList<>();
+	public List<Point> getValidTargetSquares(ChessData cd) {
+		List<Point> gpl = new ArrayList<>();
 		ChessPiece cp;
 		for (int i = 0; i < 8; i++) {
 			for (int ii = 0; ii < 8; ii++) {
@@ -44,7 +53,7 @@ public class ChessPiece {
 							ChessData testData = (ChessData) cd.clone();
 							testData.movePieceTo(testData.getPieceAt(getX(),getY()),i,ii);
 							if(!testData.isInCheck(iPlayer)){
-								gpl.add(new GPoint(i,ii));
+								gpl.add(new Point(i,ii));
 							}
 						} catch (CloneNotSupportedException e) {
 							e.printStackTrace();

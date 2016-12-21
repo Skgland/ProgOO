@@ -1,9 +1,9 @@
 package programming.set8.christchess;
 
-import acm.graphics.GPoint;
-
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * @author Bennet Blessmann
@@ -14,10 +14,12 @@ public class ChessData implements Cloneable {
 
 	private List<ChessPiece> pieces = new ArrayList<>();
 	private int activePlayer = References.PLAYER1;
+	private double turnCount = 1;
 
 	public void initNewGame() {
 
 		removeAllPieces();
+		turnCount = 1;
 
 		for (int i = 0; i < 8; i++) {
 			addNewPiece(References.PAWN, References.PLAYER1, i, 6);
@@ -46,8 +48,10 @@ public class ChessData implements Cloneable {
 		addNewPiece(References.BISHOP, References.PLAYER2, 5, 0);
 	}
 
-	public void addNewPiece(int type, int player, int x, int y) {
-		pieces.add(new ChessPiece(type, player, x, y));
+	public ChessPiece addNewPiece(int type, int player, int x, int y) {
+		ChessPiece cp = new ChessPiece(type, player, x, y);
+		pieces.add(cp);
+		return cp;
 	}
 
 	public void removeAllPieces() {
@@ -99,7 +103,7 @@ public class ChessData implements Cloneable {
 	}
 
 	public boolean isValidMove(ChessPiece piece, int x, int y) {
-		return piece.getValidTargetSquares(this).contains(new GPoint(x, y));
+		return piece.getValidTargetSquares(this).contains(new Point(x, y));
 	}
 
 	public ChessPiece movePieceTo(ChessPiece piece, int x, int y) {
@@ -115,6 +119,7 @@ public class ChessData implements Cloneable {
 	}
 
 	public void togglePlayer() {
+		turnCount+=0.5;
 		activePlayer = activePlayer == References.PLAYER1 ? References.PLAYER2 : References.PLAYER1;
 	}
 
@@ -146,7 +151,7 @@ public class ChessData implements Cloneable {
 		}
 
 		if (king == null) {
-			return true;
+			return false;
 		}
 
 		//check if the king can be attacked
@@ -165,6 +170,17 @@ public class ChessData implements Cloneable {
 		return activePlayer;
 	}
 
+	public List<ChessPiece> getPieces(){
+		List<ChessPiece> cpl = new ArrayList<>();
+		for(ChessPiece cp:pieces){
+			cpl.add(new ChessPiece(cp.getType(),cp.getPlayer(),cp.getX(),cp.getY()));
+		}
+		return cpl;
+	}
+
+	public int getTurn() {
+		return (int)turnCount;
+	}
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
