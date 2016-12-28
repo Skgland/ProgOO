@@ -68,7 +68,10 @@ public class Watermark extends GraphicsProgram {
 
 		for (int i = 0; i < wpa.length && i < ipa.length; i++) {
 			for (int ii = 0; ii < wpa[i].length && ii < ipa[i].length; ii++) {
-				ipa[i][ii] = ipa[i][ii] & convertARGBtoRGB(wpa[i][ii] & PIXEL_BLEND_MASK);
+				//ipa[i][ii] = ipa[i][ii] & convertARGBtoRGB(wpa[i][ii] & PIXEL_BLEND_MASK);
+				if(wpa[i][ii]!=0xffffffff){
+					ipa[i][ii] = convertARGBtoRGB(ipa[i][ii]&PIXEL_BLEND_MASK);
+				}
 			}
 		}
 
@@ -97,6 +100,5 @@ public class Watermark extends GraphicsProgram {
 
 		return 0xff000000 | (r << 16) | (g << 8) | b;
 	}
-
 
 }
