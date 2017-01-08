@@ -9,8 +9,12 @@ import java.util.Map;
 public class MorseCoder {
 
 	private static final Map<Character, String> charToMorse = new HashMap<>();
+	private static final Map<String, Character> morseToChar = new HashMap<>();
 
 	static {
+		/*
+		fill in the conversion map
+		* */
 		charToMorse.put('A', ".-");
 		charToMorse.put('B', "-...");
 		charToMorse.put('C', "-.-.");
@@ -48,6 +52,10 @@ public class MorseCoder {
 		charToMorse.put('8', "---..");
 		charToMorse.put('9', "----.");
 		charToMorse.put('0', "-----");
+
+		for(Map.Entry<Character,String> set:charToMorse.entrySet()){
+			morseToChar.put(set.getValue(),set.getKey());
+		}
 	}
 
 	/**
