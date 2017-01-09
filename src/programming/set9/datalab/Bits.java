@@ -215,11 +215,11 @@ public class Bits {
 	 *   Rating: 3
 	 */
 	public static int multFiveEights(int x) {
-		int sign = (x >> 31);
-		x = (x^sign)+(sign&1);
-		x = ((x << 2) + x) >> 3;
-		sign = sign^(x>>31);
-		return (sign&1)+(sign^x);
+		int sign = (x >> 31); //get sign
+		x = (x^sign)+(sign&1); //when x negative get the complement
+		x = ((x << 2) + x) >> 3; //multiply x with five eights
+		sign = sign^(x>>31); //check if the sign flipped while multiplying
+		return (sign&1)+(sign^x); //if was negative xor sign flipped then flip it again
 	}
 	
 	/** 
