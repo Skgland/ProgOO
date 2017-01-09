@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Created by BB20101997 on 08. Jan. 2017.
+ * @author Bennet Blessmann
+ * Created on 08. Jan. 2017.
  */
 public class PNParserTest {
 

@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by BB20101997 on 08. Jan. 2017.
+ * @author Bennet Blessmann
+ * Created on 08. Jan. 2017.
  */
 public class MorseCoder {
 
 	private static final Map<Character, String> charToMorse = new HashMap<>();
-	private static final Map<String, Character> morseToChar = new HashMap<>();
 
 	static {
 		/*
@@ -53,9 +53,6 @@ public class MorseCoder {
 		charToMorse.put('9', "----.");
 		charToMorse.put('0', "-----");
 
-		for(Map.Entry<Character,String> set:charToMorse.entrySet()){
-			morseToChar.put(set.getValue(),set.getKey());
-		}
 	}
 
 	/**
@@ -65,16 +62,15 @@ public class MorseCoder {
 	 * character in the output string.
 	 *
 	 * @param input the input string.
-	 *
 	 * @return the morse code version of the input string, ignoring all characters in the input string that cannot be
 	 * represented in international morse code.
 	 */
 	public static String encode(String input) {
 		System.out.println(input);
 		StringBuilder stringBuilder = new StringBuilder();
-		for(String s : input.replace("ß","").toUpperCase().split(" ")) {
-			for(char c:s.toCharArray()){
-				if(charToMorse.containsKey(c)){
+		for (String s : input.replace("ß", "").toUpperCase().split(" ")) {
+			for (char c : s.toCharArray()) {
+				if (charToMorse.containsKey(c)) {
 					stringBuilder.append(charToMorse.get(c));
 					stringBuilder.append(' ');
 				}
@@ -90,17 +86,21 @@ public class MorseCoder {
 	 * encode method.
 	 *
 	 * @param input morse code input string.
-	 *
 	 * @return natural language version or {@code null} if the input string could not be properly parsed.
 	 */
 	public static String decode(String input) {
 		StringBuilder stringBuilder = new StringBuilder();
-		for(String s : input.split("\n")) {
-			for(String c : s.split(" ")) {
-				if(charToMorse.containsValue(c)) {
-					charToMorse.entrySet().forEach(e->{if(c.equals(e.getValue())){stringBuilder.append(e.getKey());}});
-				}else{
-					return  null;
+		for (String s : input.split("\n")) {
+			for (String c : s.split(" ")) {
+				if (charToMorse.containsValue(c)) {
+					for (Map.Entry<Character, String> entry : charToMorse.entrySet()) {
+						if (c.equals(entry.getValue())) {
+							stringBuilder.append(entry.getKey());
+							break;
+						}
+					}
+				} else {
+					return null;
 				}
 			}
 			stringBuilder.append(' ');
