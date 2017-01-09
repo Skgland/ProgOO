@@ -88,6 +88,7 @@ package programming.set9.datalab;
  *  
  */
 
+@SuppressWarnings({"WeakerAccess", "PublicMethodWithoutLogging"})
 public class Bits {
 
 	/** 
@@ -233,6 +234,7 @@ public class Bits {
 	  return x+y;
 	}
 
+	@SuppressWarnings({"UnusedAssignment", "DanglingJavadoc"})
 	public static int sum3(int x, int y, int z) {
 	  int word1 = 0;
 	  int word2 = 0;

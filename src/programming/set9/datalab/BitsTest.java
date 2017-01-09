@@ -83,6 +83,8 @@ class BitsTest {
 		void isNotEqual () {
 			Assertions.assertEquals(1,Bits.isNotEqual(0,15));
 			Assertions.assertEquals(1,Bits.isNotEqual(-5,7));
+			Assertions.assertEquals(1, Bits.isNotEqual(-1, -15));
+			Assertions.assertEquals(1, Bits.isNotEqual(5, -7));
 			for(int i = -1_000_000; i<=1_000_000; i++){
 				Assertions.assertEquals(0, Bits.isNotEqual(i, i),""+i);
 			}
@@ -116,6 +118,7 @@ class BitsTest {
 			Assertions.assertEquals(3+5+6,Bits.sum3(3,5,6));
 			Assertions.assertEquals(3+(-50)+6,Bits.sum3(3,-50,6));
 			Assertions.assertEquals(3+5+67,Bits.sum3(3,5,67));
+			Assertions.assertEquals(9 + 5 + 67, Bits.sum3(9, 5, 67));
 		}
 
 	}
