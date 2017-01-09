@@ -1,3 +1,5 @@
+package programming.set9.datalab;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -73,14 +75,20 @@ class BitsTest {
 			Assertions.assertEquals(0,Bits.isNonZero(0));
 			Assertions.assertEquals(1,Bits.isNonZero(45));
 			Assertions.assertEquals(1,Bits.isNonZero(-45));
+			Assertions.assertEquals(1, Bits.isNonZero(42));
+			Assertions.assertEquals(1, Bits.isNonZero(-42));
 		}
 
 		@Test
 		void isNotEqual () {
 			Assertions.assertEquals(1,Bits.isNotEqual(0,15));
-			Assertions.assertEquals(0,Bits.isNotEqual(0,0));
 			Assertions.assertEquals(1,Bits.isNotEqual(-5,7));
-			Assertions.assertEquals(0,Bits.isNotEqual(-4,-4));
+			for(int i = -1_000_000; i<=1_000_000; i++){
+				Assertions.assertEquals(0, Bits.isNotEqual(i, i),""+i);
+			}
+			Assertions.assertEquals(0, Bits.isNotEqual(Integer.MIN_VALUE, Integer.MIN_VALUE), "MIN");
+			Assertions.assertEquals(0, Bits.isNotEqual(Integer.MAX_VALUE, Integer.MAX_VALUE), "MAX");
+
 		}
 
 		@Test
@@ -97,7 +105,10 @@ class BitsTest {
 
 		@Test
 		void multFiveEights () {
-
+			int[] test = {5, 7, -8, 0, 256, -1, -2147483648};
+			for(int i:test){
+				Assertions.assertEquals(i * 5 / 8, Bits.multFiveEights(i),""+i);
+			}
 		}
 
 		@Test

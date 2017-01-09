@@ -166,7 +166,7 @@ public class Bits {
 	 *   Rating: 4 
 	 */
 	public static int isNonZero(int x) {
-		return (x|~x+1)>>31&1;
+		return ((x|~x+1)>>31)&1;
 	}
 	
 	/** 
@@ -177,7 +177,9 @@ public class Bits {
 	 *   Rating: 2
 	 */
 	public static int isNotEqual(int x, int y) {
-		return ((x^y)|(~(x^y)+1))>>31&1;
+		x = x ^ y;
+		x = ((x | (~x + 1)) >> 31) & 1;
+		return x;
 	}
 	
 	/** 
@@ -212,7 +214,11 @@ public class Bits {
 	 *   Rating: 3
 	 */
 	public static int multFiveEights(int x) {
-		return (x+x+x+x+x)>>3;
+		int sign = (x >> 31);
+		x = (x^sign)+(sign&1);
+		x = ((x << 2) + x) >> 3;
+		sign = sign^(x>>31);
+		return (sign&1)+(sign^x);
 	}
 	
 	/** 
