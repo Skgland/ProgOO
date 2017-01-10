@@ -1,4 +1,5 @@
 package programming.set9.datalab;
+
 /*
  * Adapted from 
  * CS:APP Data Lab 
@@ -111,7 +112,9 @@ public class Bits {
 	 *   Rating: 3
 	 */
 	public static int addOK(int x, int y) {
-		return ((x>>31^y>>31)|((~(x>>31))^(y>>31)&(~(x>>31))^((x+y)>>31)))&1;
+		int xs = x>>31;
+		int ys = y>>31;
+		return ((xs^ys)|((~xs^ys)&(~xs^((x+y)>>31))))&1;
 	}
 	
 	/** 
