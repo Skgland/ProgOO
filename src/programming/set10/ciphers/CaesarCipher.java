@@ -7,10 +7,8 @@ public class CaesarCipher {
 
 	private final int KEY;
 
-	CaesarCipher(CryptMode cm, int key){
-		key%=26;
-		key = key>=0?key : 26+key;
-		KEY = cm==CryptMode.ENCRYPT?key:26-key;
+	public CaesarCipher(CryptMode cm, int key){
+		KEY = (cm==CryptMode.ENCRYPT)^(key<0)?Math.abs(key%26):26-Math.abs(key%26);
 	}
 
 	/**
@@ -25,10 +23,10 @@ public class CaesarCipher {
 		StringBuilder ret = new StringBuilder(text.length());
 		for(char c:text.toCharArray()){
 			if(c>='A'&&c<='Z'){
-				ret.append((c-'A'+KEY)%26+'A');
+				ret.append((char)((c-'A'+KEY)%26+'A'));
 			}
 			else if(c >= 'a' && c <= 'z'){
-				ret.append((c - 'a' + KEY) % 26+'a');
+				ret.append((char)((c - 'a' + KEY) % 26+'a'));
 			}else{
 				ret.append(c);
 			}
