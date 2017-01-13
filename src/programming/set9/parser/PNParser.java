@@ -9,7 +9,6 @@ import java.util.LinkedList;
  */
 public class PNParser {
 
-
 	private final SimpleTree st; //to store the structure of the equation
 
 	/**
