@@ -1,38 +1,38 @@
 package programming.set9.parser;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * @author Bennet Blessmann
- * Created on 08. Jan. 2017.
+ *         Created on 08. Jan. 2017.
  */
 public class PNParser {
 
 
-	private final SimpleTree st;
+	private final SimpleTree st; //to store the structure of the equation
 
 	/**
 	 * The constructor expecting the expression in polish notation.
 	 */
 	public PNParser(String pNExpression) {
-		List<String> elements =new ArrayList<>(Arrays.asList(pNExpression.split(" ")));
-		st = parse(elements);
-		if(elements.size()!=0){
+		//turn the equation into its parts and save it in a list
+		//linked list because we always get and remove the first element
+		LinkedList<String> elements = new LinkedList<>(Arrays.asList(pNExpression.split(" ")));
+		st = parse(elements); //parse the list a SimpleTree
+		if (elements.size() != 0) { // not all tokens have been used by the parser
 			throw new IllegalArgumentException("Too many Tokens!");
 		}
 	}
 
-	private SimpleTree parse(List<String> elements) {
-		if(elements.isEmpty()){
+	private SimpleTree parse(LinkedList<String> elements) {
+		if (elements.isEmpty()) {//can't parse an equation with no tokens left
 			throw new IllegalArgumentException("Not enough Tokens!");
 		}
-		String content = elements.get(0);
-		elements.remove(0);
-		if("+".equals(content) || "*".equals(content)) {
+		String content = elements.pop(); // get and remove the first element
+		if ("+".equals(content) || "*".equals(content)) { // if it is an operation add branch
 			return new SimpleTree(content, parse(elements), parse(elements));
-		} else {
+		} else { //else add a leaf
 			return new SimpleTree(content);
 		}
 	}
@@ -42,25 +42,39 @@ public class PNParser {
 	 */
 	@Override
 	public String toString() {
-		return simpleTreeToString(st, false);
+		//bootstrap the simpleTreeToString recursion and return the result as String
+		return simpleTreeToString(st, false).toString();
 	}
 
-	static String simpleTreeToString(SimpleTree st, boolean factor) {
-		if(st == null) { return ""; }
-		boolean       nextFactor = !st.getContent().equals("+");
-		boolean       parents    = factor && !nextFactor;
-		StringBuilder sb         = new StringBuilder();
+	static StringBuilder simpleTreeToString(SimpleTree st, boolean factor) {
 
-		sb.append(parents ? "(" : "");
-		if(st.getLeft() != null) {
+		//to store the result
+		StringBuilder sb = new StringBuilder();
+
+		//not a tree is empty
+		if (st == null) {
+			return sb;
+		}
+		//is the current content not an addition necessary for deciding if parenthesis are necessary
+		boolean nextFactor = !st.getContent().equals("+");
+		//should parenthesis be added
+		boolean parents = factor && !nextFactor;
+
+		//the current tree
+		sb.append(parents ? "(" : ""); //if necessary add parenthesis
+		//if existent add left branch
+		if (st.getLeft() != null) {
 			sb.append(simpleTreeToString(st.getLeft(), nextFactor));
 			sb.append(' ');
-		} sb.append(st.getContent());
-		if(st.getRight() != null) {
+		}
+		//add content
+		sb.append(st.getContent());
+		//if existent add right branch
+		if (st.getRight() != null) {
 			sb.append(' ');
 			sb.append(simpleTreeToString(st.getRight(), nextFactor));
 		}
-		sb.append(parents ? ")" : "");
-		return sb.toString();
+		sb.append(parents ? ")" : "");//if necessary add parenthesis
+		return sb;
 	}
 }

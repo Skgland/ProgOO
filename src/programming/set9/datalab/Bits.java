@@ -100,8 +100,10 @@ public class Bits {
 	 *   Rating: 4
 	 */
 	public static int abs(int x) {
-		return (x^(x>>31))-(x>>31);
-	}
+		//xor all bits with the sign and add the sign
+		//if x is positive this will not change x
+		//if x is negative will flip all bits and add 1 therefor getting the complement
+		return (x^(x>>31))+((x>>31)&1);}
 
 	/** 
 	 * addOK - Determine if can compute x+y without overflow
@@ -112,8 +114,10 @@ public class Bits {
 	 *   Rating: 3
 	 */
 	public static int addOK(int x, int y) {
-		int xs = x>>31;
-		int ys = y>>31;
+		int xs = x>>31;//get the sign of x
+		int ys = y>>31;//get the sign of y
+		//if signs don't equal OK#
+		//if signs equal check if the result has the same sign
 		return ((xs^ys)|((~xs^ys)&(~xs^((x+y)>>31))))&1;
 	}
 	
@@ -125,6 +129,7 @@ public class Bits {
 	 *   Rating: 1
 	 */
 	public static int bitAnd(int x, int y) {
+		//(not x nor not y)
 		return ~(~x|~y);
 	}
 	
@@ -136,6 +141,9 @@ public class Bits {
 	 *   Rating: 4
 	 */	
 	public static int bitParity(int x) {
+		//xor the first half with the second half
+		//do this with the first and second quarter and so on
+		//until you have only one bit then and with 1
 		return ((x=(x=(x=(x=x^(x>>16))^(x>>8))^(x>>4))^(x>>2))^(x>>1))&1;
 		}
 	
@@ -147,6 +155,7 @@ public class Bits {
 	 *   Rating: 2
 	 */
 	public static int bitXor(int x, int y) {
+		//(x nand y) and (not x nand not y)
 		return (~(x&y))&(~(~x&~y));
 	}
 	
@@ -158,6 +167,7 @@ public class Bits {
 	 *   Rating: 3
 	 */
 	public static int isLess(int x, int y) {
+		//subtract y from x check if negative
 		return (x+(~y+1))>>31&1;
 	}
 	
@@ -170,6 +180,7 @@ public class Bits {
 	 *   Rating: 4 
 	 */
 	public static int isNonZero(int x) {
+		//is not zero if either x or -x are negative
 		return ((x|~x+1)>>31)&1;
 	}
 	
@@ -181,8 +192,9 @@ public class Bits {
 	 *   Rating: 2
 	 */
 	public static int isNotEqual(int x, int y) {
-		x = x ^ y;
-		x = ((x | (~x + 1)) >> 31) & 1;
+		//return x==y?0:1; //<-
+		x = x ^ y; //if equal x will be 0
+		x = ((x | (~x + 1)) >> 31) & 1; //isNonZero
 		return x;
 	}
 	
@@ -195,7 +207,7 @@ public class Bits {
 	 *   Rating: 4 
 	 */
 	public static int logicalNeg(int x) {
-		return ((((~x+1)>>31)|(x>>31))^1)&1;
+		return ((((~x+1)>>31)|(x>>31))^1)&1;//isNonZero and flip first bit
 	}
 	
 	/** 
@@ -245,8 +257,9 @@ public class Bits {
 	     Fill in code below that computes values for word1 and word2
 	     without using any '+' operations 
 	  ***************************************************************/
-		word1 = x^y^z;
-		word2 = ((x&y)|(x&z)|(y&z))<<1;
+	  //basically a carry save adder
+	  word1 = x^y^z;
+	  word2 = ((x&y)|(x&z)|(y&z))<<1;
 	  /**************************************************************
 	     Don't change anything below here
 	  ***************************************************************/

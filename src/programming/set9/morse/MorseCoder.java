@@ -9,6 +9,7 @@ import java.util.Map;
  */
 public class MorseCoder {
 
+	//a map storing the conversion from the alphabet to international morse code
 	private static final Map<Character, String> charToMorse = new HashMap<>();
 
 	static {
@@ -66,17 +67,25 @@ public class MorseCoder {
 	 * represented in international morse code.
 	 */
 	public static String encode(String input) {
-		System.out.println(input);
-		StringBuilder stringBuilder = new StringBuilder();
+		StringBuilder stringBuilder = new StringBuilder(); //to store the result
+		// remove ß because it would be converted to SS
+		// than to uppercase and split at " "
+		// iterate over the resulting array of words
 		for (String s : input.replace("ß", "").toUpperCase().split(" ")) {
+			//for each char in a word
 			for (char c : s.toCharArray()) {
+				//if the char can be converted to morse
 				if (charToMorse.containsKey(c)) {
+					//append the morse representation
 					stringBuilder.append(charToMorse.get(c));
+					//append a space
 					stringBuilder.append(' ');
 				}
 			}
+			//end of word append new line
 			stringBuilder.append('\n');
 		}
+		//return the resulting string
 		return stringBuilder.toString();
 	}
 
@@ -89,22 +98,26 @@ public class MorseCoder {
 	 * @return natural language version or {@code null} if the input string could not be properly parsed.
 	 */
 	public static String decode(String input) {
-		StringBuilder stringBuilder = new StringBuilder();
-		for (String s : input.split("\n")) {
-			for (String c : s.split(" ")) {
-				if (charToMorse.containsValue(c)) {
+		StringBuilder stringBuilder = new StringBuilder();//to store the result
+		for (String s : input.split("\n")) { //split into lines and iterate over them
+			for (String c : s.split(" ")) { //split into morse codes and iterate over them
+				if (charToMorse.containsValue(c)) { //can be converted back
+					//find the entry in the map
 					for (Map.Entry<Character, String> entry : charToMorse.entrySet()) {
 						if (c.equals(entry.getValue())) {
+							//append the letter
 							stringBuilder.append(entry.getKey());
 							break;
 						}
 					}
-				} else {
+				} else { //else fail and return null
 					return null;
 				}
 			}
+			//end of line append " "
 			stringBuilder.append(' ');
 		}
+		//return the result
 		return stringBuilder.toString();
 	}
 }

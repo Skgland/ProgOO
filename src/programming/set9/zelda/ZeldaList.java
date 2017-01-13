@@ -23,19 +23,20 @@ public class ZeldaList<T> implements Iterable<ZeldaElement<T>> {
 	 */
 	public void add(T value) {
 		if (value == null) {
-			return;
+			return;//null values shall not be saved
 		}
 
+		//start at the head
 		ZeldaElement<T> cur = headElement;
-		while (cur.getValue() != null) {
-			if (cur.getNextElement() == null) {
-				cur.setNextElement(cur = new ZeldaElement<>());
+		while (cur.getValue() != null) {//until the current zelda does not store a value
+			if (cur.getNextElement() == null) {//if no next element exists
+				cur.setNextElement(cur = new ZeldaElement<>()); //create a next element and set cur to it
 			} else {
-				cur = cur.getNextElement();
+				cur = cur.getNextElement(); // just set cur to the next element
 			}
 		}
-		size++;
-		cur.setValue(value);
+		size++; //increase the size counter
+		cur.setValue(value); // set the value
 	}
 
 	/**
@@ -51,7 +52,7 @@ public class ZeldaList<T> implements Iterable<ZeldaElement<T>> {
 			return; //index out of bounds
 		}
 
-		if (index == 0) { //head has to be changed
+		if (index == 0) { //head has to be changed create new element and insert it before the head
 			ZeldaElement<T> nEl = new ZeldaElement<>();
 			nEl.setNextElement(headElement);
 			nEl.setValue(value);
@@ -86,20 +87,22 @@ public class ZeldaList<T> implements Iterable<ZeldaElement<T>> {
 	public boolean remove(T value) {
 		ZeldaElement<T> pre = null;
 		ZeldaElement<T> cur = headElement;
-		if (!contains(value)) {
+		if (!contains(value)) { //if the value is not part of the list return false
 			return false;
 		}
 
 		do {
-			if (cur.getValue().equals(value)) {
-				if (pre != null) {
+			if (cur.getValue().equals(value)) { //have we found the right element
+				if (pre != null) { //it's not the head link previous to the next element
 					pre.setNextElement(cur.getNextElement());
 				} else {
+					//it's the head replace it with the next element
 					headElement = cur.getNextElement();
 				}
-				size--;
-				return true;
+				size--; //decrement the size counter
+				return true;//return the success
 			}
+			//move current to previous and get a new current element
 			pre = cur;
 			cur = cur.getNextElement();
 		} while (true);
@@ -109,8 +112,9 @@ public class ZeldaList<T> implements Iterable<ZeldaElement<T>> {
 	 * Removes all elements from the list.
 	 */
 	public void clear() {
+		//just replace the head
 		headElement = new ZeldaElement<>();
-		size = 0;
+		size = 0;//and reset the size
 	}
 
 	/**
@@ -119,6 +123,7 @@ public class ZeldaList<T> implements Iterable<ZeldaElement<T>> {
 	 * @return number of elements.
 	 */
 	public int size() {
+		//return the size counter
 		return size;
 	}
 
@@ -129,18 +134,20 @@ public class ZeldaList<T> implements Iterable<ZeldaElement<T>> {
 	 * @return the value at the given index, or {@code null} if the index is invalid.
 	 */
 	public T get(int index) {
-		if (index < 0) {
-			return null;
+		if (index < 0||index >=size) {
+			return null;//index out of bounds
 		}
-		ZeldaElement<T> cur = headElement;
-		while (index != 0 && cur != null) {
+		//from here on we don't have to check cur != null, because it
+		//should never happen as long as we are not out of bounds, which we checked
+
+		ZeldaElement<T> cur = headElement; //the current element starting at the head
+		while (index != 0) { //go through until we are at the right element
 			cur = cur.getNextElement();
 			index--;
 		}
-		if (cur != null) {
-			return cur.getValue();
-		}
-		return null;
+
+		//return its value
+		return cur.getValue();
 	}
 
 	/**
@@ -152,17 +159,19 @@ public class ZeldaList<T> implements Iterable<ZeldaElement<T>> {
 	 * is {@code null}.
 	 */
 	public T set(int index, T value) {
-		if (index < 0 || index >= size() || value == null) {
+		//check if index out of bounds or value null
+		if (index < 0 || index >= size || value == null) {
 			return null;
 		}
 
+		//start at the head
 		ZeldaElement<T> cur = headElement;
-		while (index != 0) {
+		while (index != 0) { //go through until we are at the right element
 			cur = cur.getNextElement();
 			index--;
 		}
 
-
+		//replace old value and return the old value
 		T old = cur.getValue();
 		cur.setValue(value);
 		return old;
@@ -175,17 +184,21 @@ public class ZeldaList<T> implements Iterable<ZeldaElement<T>> {
 	 * @return the value's index or -1 if {@code value == null} or if the value is not in the list.
 	 */
 	public int indexOf(T value) {
-		if (value == null) {
+		//null is never part of the list
+		//nothing is in an empty list
+		if (value == null||size==0) {
 			return -1;
 		}
+
 		int count = 0;
+		//iterate over the list counting how far we have gone
 		for(ZeldaElement cur:this){
 			if(value.equals(cur.getValue())){
-				return count;
+				return count;//found the value returning count
 			}
 			count++;
 		}
-		return -1;
+		return -1;//not found returning -1
 	}
 
 	/**
@@ -196,6 +209,7 @@ public class ZeldaList<T> implements Iterable<ZeldaElement<T>> {
 	 * is {@code null}.
 	 */
 	public boolean contains(T value) {
+		//only if it is not in the list indexOf returns -1
 		return indexOf(value) != -1;
 	}
 
@@ -206,8 +220,10 @@ public class ZeldaList<T> implements Iterable<ZeldaElement<T>> {
 	 * @return {@code true} if the list is empty, {@code false} if it isn't.
 	 */
 	public boolean isEmpty() {
-		return headElement.getValue() == null;
+		return size==0;
 	}
+
+	//implement the Iterable interface for easy foreach loop
 
 	@Override
 	public Iterator<ZeldaElement<T>> iterator() {
@@ -230,6 +246,6 @@ public class ZeldaList<T> implements Iterable<ZeldaElement<T>> {
 
 	@Override
 	public Spliterator<ZeldaElement<T>> spliterator() {
-		return Spliterators.spliterator(iterator(),size,0);
+		return Spliterators.spliterator(iterator(),size,Spliterator.SIZED);
 	}
 }

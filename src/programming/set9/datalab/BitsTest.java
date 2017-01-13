@@ -15,6 +15,8 @@ class BitsTest {
 		Assertions.assertEquals(Math.abs(7), Bits.abs(7));
 		Assertions.assertEquals(Math.abs(0), Bits.abs(0));
 		Assertions.assertEquals(Math.abs(-1), Bits.abs(-1));
+		Assertions.assertEquals(Math.abs(Integer.MIN_VALUE), Bits.abs(Integer.MIN_VALUE));
+		Assertions.assertEquals(Math.abs(Integer.MAX_VALUE), Bits.abs(Integer.MAX_VALUE));
 	}
 
 	@Test
