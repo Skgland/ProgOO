@@ -5,11 +5,11 @@ package programming.set10.enums;
  */
 public enum Length {
 
-	ARSHIN(0.71),FINGER(0.022225),METER(1), HORSE_LENGTH(2.4), PARSEC(30_856_776_000_000_000d),PLUTO_RADIUS(1_186_000);
+	ARSHIN(0.71), FINGER(0.022225), METRE(1), HORSE_LENGTH(2.4), PARSEC(30_856_776_000_000_000d), PLUTO_RADIUS(1_186_000);
 
 	private final double IN_METERS;
 
-	private Length(double inMeters){
+	private Length(double inMeters) {
 		IN_METERS = inMeters;
 	}
 
@@ -32,7 +32,7 @@ public enum Length {
 	 * @return the corresponding length in the target unit.
 	 */
 	public double convertTo(Length targetLength, double amount) {
-		return amount*IN_METERS/targetLength.IN_METERS;
+		return amount * IN_METERS / targetLength.IN_METERS;
 	}
 
 }
