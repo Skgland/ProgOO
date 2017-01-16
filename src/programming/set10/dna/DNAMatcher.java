@@ -48,8 +48,17 @@ public class DNAMatcher {
 		}
 
 		char[] base = baseDNA.toCharArray();
+		for(char c:base){
+			switch(c){
+				case 'A':
+				case 'T':
+				case 'G':
+				case 'C': continue;
+				default: return -1;
+			}
+		}
 
-		out: for(int b = 0;b<base.length-candidate.length;b++){
+		out: for(int b = 0;b<=base.length-candidate.length;b++){
 			for(int offset = 0;offset<candidate.length;offset++){
 				if(base[b+offset]!=candidate[offset]){
 					continue out;
