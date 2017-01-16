@@ -33,5 +33,4 @@ public class CaesarCipher {
 		}
 		return ret.toString();
 	}
-
 }

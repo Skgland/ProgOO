@@ -19,9 +19,10 @@ public class DNAMatcher {
 	 */
 	public static int findFirstBindingPosition(String baseDNA, String candidateDNA) {
 
-		//convert the candidate to it's opposing side
+		//char array for easier comparison
 		char[] candidate = candidateDNA.toCharArray();
 
+		//convert the candidate to it's opposing side
 		for(int i = 0; i < candidate.length; i++) {
 			char c = candidate[i];
 			switch(c) {
@@ -42,11 +43,13 @@ public class DNAMatcher {
 					break;
 				}
 				default: {
+					//invalid char in candidateDNA
 					return -1;
 				}
 			}
 		}
 
+		//check if baseDNA is valid
 		char[] base = baseDNA.toCharArray();
 		for(char c:base){
 			switch(c){
@@ -58,14 +61,19 @@ public class DNAMatcher {
 			}
 		}
 
+		//search for match
 		out: for(int b = 0;b<=base.length-candidate.length;b++){
 			for(int offset = 0;offset<candidate.length;offset++){
 				if(base[b+offset]!=candidate[offset]){
 					continue out;
 				}
 			}
+
+				//return match
 			return b;
 		}
+
+		//no match found
 		return -1;
 	}
 }
