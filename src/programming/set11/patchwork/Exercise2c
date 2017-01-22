@@ -1,0 +1,9 @@
+In class you learned that we can characterize the run time of a program (part) by its computational complexity.
+Explain what computational complexity means, and assess the computational complexity for one of the patches you wrote.
+
+Hint: the first thing you have to think about is a meaningful measure of the problem size; i.e., you should make precise what you consider as N here.
+
+I am picking my Patch implemented in the DefaultPatches enum named POLYGON
+N will be the vertex amount the RandomGenerator picks
+and the complexity would be N+N*1.5*2*N
+without constant factors N+N*N which would be dominated by N*N leaving it as my end result.

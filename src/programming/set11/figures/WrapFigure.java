@@ -1,4 +1,4 @@
-package programming.set11.ebooks;
+package programming.set11.figures;
 
 import acm.graphics.GCompound;
 import acm.graphics.GImage;
@@ -11,20 +11,20 @@ import java.util.LinkedList;
 /**
  * Created by BB20101997 on 20. Jan. 2017.
  */
-public class WrapFigure{
+public class WrapFigure {
 
-	String font            = "Serif-12";
-	int    boarder         = 10;
-	int    lineWidth       = 300;
-	int    firstLineIndent = 20;
-	int    spacing         = 10;
-	double lineSpacing     = 1.2;
+	String font        = "Serif-12";
+	int    boarder     = 10;
+	int    lineWidth   = 300;
+	//int    firstLineIndent = 20;
+	int    spacing     = 10;
+	double lineSpacing = 1.2;
 	GImage img;
 	String fileName;
 	double scale;
 	String content = "";
 
-	WrapFigure(int width, String wrapFigureFilename, double scale, String text){
+	public WrapFigure(int width, String wrapFigureFilename, double scale, String text) {
 		lineWidth = width;
 		fileName = wrapFigureFilename;
 		this.scale = scale;
@@ -60,13 +60,13 @@ public class WrapFigure{
 	public void setLineWidth(int n) {
 		lineWidth = n;
 	}
-
-	/**
+/*
+	*//**
 	 * The offset at the beginning of a new Paragraph
-	 */
+	 *//*
 	public void setFirstLineIndent(int n) {
 		firstLineIndent = n;
-	}
+	}*/
 
 	/**
 	 * The space between two baselines as a multiple of the fonts height
@@ -79,7 +79,7 @@ public class WrapFigure{
 		content = s;
 	}
 
-	public GCompound getCompound(){
+	public GCompound getCompound() {
 		GCompound ret = new GCompound();
 		updateDisplay(ret);
 		return ret;
@@ -89,13 +89,13 @@ public class WrapFigure{
 	 * //updates the displayed text to match changed settings/text
 	 */
 	private void updateDisplay(GCompound gc) {
-		gc.add(img);
+		gc.add(img, boarder, boarder);
 		GLabel metricsLable = new GLabel("This is just there to get the metrics");
 		metricsLable.setFont(font);//set the Font
 		FontMetrics fontMetrics = metricsLable.getFontMetrics(); //get the Metrics
 		String[]    strings     = content.split("\n"); //split into the paragraphs
 		for(int i = 0, l = 0; i < strings.length; i++) { //generate and add the GLabels for each paragraph
-			l = addParagraph(strings[i], l, fontMetrics,gc);
+			l = addParagraph(strings[i], l, fontMetrics, gc);
 		}
 	}
 
@@ -106,18 +106,21 @@ public class WrapFigure{
 	 *
 	 * @return the next empty line
 	 */
-	private int addParagraph(String string, int l, FontMetrics fontMetrics,GCompound gc) {
+	private int addParagraph(String string, int l, FontMetrics fontMetrics, GCompound gc) {
 		double             x;
 		double             y;
-		LinkedList<String> lls = new LinkedList<>(Arrays.asList(string.split(" ")));
+		LinkedList<String> lls                 = new LinkedList<>(Arrays.asList(string.split(" ")));
 		String             cur;
 		GLabel             gLabel;
+		double             firstLineUnderImage = fontMetrics.getAscent() + img.getHeight() + boarder + spacing;
+		double             imgOffset           = img.getWidth() + spacing;
+
 		while(!lls.isEmpty()) {
 			y = getLineY(l++, fontMetrics);
-			x = boarder+(y>=fontMetrics.getAscent()+img.getHeight()+boarder+spacing? 0: img.getWidth() + spacing);
+			x = boarder + (y >= firstLineUnderImage ? 0 : imgOffset);
 			cur = lls.pop();
 			while(!lls.isEmpty()) {
-				if(fontMetrics.stringWidth(cur + " " + lls.getFirst()) <= lineWidth - x) {
+				if(fontMetrics.stringWidth(cur + " " + lls.getFirst()) <= lineWidth - x - boarder) {
 					cur += " " + lls.pop();
 				} else {
 					break;
@@ -129,6 +132,7 @@ public class WrapFigure{
 		}
 		return l;
 	}
+
 	/**
 	 * returns the Baseline Y-Coordinat of the current line line index starting at 0
 	 */
