@@ -94,7 +94,8 @@ public enum DefaultPatches implements IPatchGenerator {
 				}
 			}
 		}
-	}, SPIRAL_RECTANGLES {
+	},
+	SPIRAL_RECTANGLES {
 		@Override
 		public void generatePatch(Patch patch) {
 			int side = patch.SIDE_LENGTH;
@@ -120,7 +121,8 @@ public enum DefaultPatches implements IPatchGenerator {
 				patch.add(gRect, side - (i + 1) * width, i * width);
 			}
 		}
-	}, MULTI_VERT_POLY {
+	},
+	MULTI_VERT_POLY {
 		@Override
 		public void generatePatch(Patch patch) {
 			int side = patch.SIDE_LENGTH;
@@ -150,6 +152,44 @@ public enum DefaultPatches implements IPatchGenerator {
 					gPolygon.addVertex(gPoints[p].getX() + side / 2, gPoints[p].getY() + side / 2);
 				}
 				DefaultPatches.setRandomColor(gPolygon);
+				patch.add(gPolygon);
+			}
+		}
+	},
+	MULTI_VERT_POLY_TRANS {
+		@Override
+		public void generatePatch(Patch patch) {
+			int side = patch.SIDE_LENGTH;
+
+			GRect gRect = new GRect(side, side);
+			DefaultPatches.setRandomColor(gRect);
+			patch.add(gRect);
+
+			GPolygon gPolygon;
+			double   radius  = side / 2;
+			int      vertexes;
+			GPoint[] gPoints = new GPoint[]{new GPoint(-radius, -radius), new GPoint(-radius, radius), new GPoint(radius, radius), new GPoint(radius, -radius)}; //init with hole patch size
+
+			double midX, midY;
+			Color color = R_GEN.nextColor();
+			color = new Color(color.getRGB()&0x33FFFFFF,true);
+
+			//generate inner polygons
+			for(int i = 0; i < 5; i++) {
+				vertexes = R_GEN.nextInt(3, 12);
+				midX = (gPoints[0].getX() + gPoints[1].getX()) / 2;
+				midY = (gPoints[0].getY() + gPoints[1].getY()) / 2;
+				radius = Math.sqrt(midX * midX + midY * midY);
+
+				gPoints = new GPoint[vertexes];
+				gPolygon = new GPolygon();
+				for(int p = 0; p < vertexes; p++) {
+					gPoints[p] = new GPoint((Math.sin((i % 2 == 0 ? 0 : Math.PI) + p * 2 * Math.PI / vertexes)) * radius, (Math.cos((i % 2 == 0 ? 0 : Math.PI) + p * 2 * Math.PI / vertexes)) * radius);
+					gPolygon.addVertex(gPoints[p].getX() + side / 2, gPoints[p].getY() + side / 2);
+				}
+				gPolygon.setFilled(true);
+				gPolygon.setFillColor(color);
+				gPolygon.setColor(R_GEN.nextColor());
 				patch.add(gPolygon);
 			}
 		}

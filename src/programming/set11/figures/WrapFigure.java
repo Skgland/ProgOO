@@ -15,7 +15,7 @@ public class WrapFigure {
 
 	String font        = "Serif-12";
 	int    boarder     = 10;
-	int    lineWidth   = 300;
+	int    lineWidth;
 	//int    firstLineIndent = 20;
 	int    spacing     = 10;
 	double lineSpacing = 1.2;

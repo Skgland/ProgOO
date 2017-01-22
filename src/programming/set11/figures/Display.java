@@ -2,13 +2,15 @@ package programming.set11.figures;
 
 import acm.program.GraphicsProgram;
 
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
  * Created by BB20101997 on 21. Jan. 2017.
  */
-public class Display extends GraphicsProgram implements KeyListener {
+public class Display extends GraphicsProgram implements KeyListener, ComponentListener {
 
 	private WrapFigure wrapFigure;
 
@@ -16,6 +18,7 @@ public class Display extends GraphicsProgram implements KeyListener {
 	public void init() {
 		super.init();
 		getGCanvas().addKeyListener(this);
+		getGCanvas().addComponentListener(this);
 	}
 
 	public void run() {
@@ -26,12 +29,12 @@ public class Display extends GraphicsProgram implements KeyListener {
 		text += "'You're late!', said a voice in the dark.\n";
 		text += "It was then that he noticed that he might not have been on time.";
 
-		wrapFigure = new WrapFigure(400, "tinlh01w.jpg", 0.42, text);
+		wrapFigure = new WrapFigure(400, "tinlh01w.jpg", 0.46, text);
 		wrapFigure.setTextFont("Garamond-bold-12");
 		wrapFigure.setBorder(10);
 		wrapFigure.setSpacing(10);
 		update();
-		setSize(400,300);
+		setSize(wrapFigure.lineWidth, 300);
 	}
 
 	private void update() {
@@ -99,12 +102,13 @@ public class Display extends GraphicsProgram implements KeyListener {
 				break;
 			}
 			case 'L': {
-					wrapFigure.setLineSpacingFactor(wrapFigure.lineSpacing + 0.05);
+				wrapFigure.setLineSpacingFactor(wrapFigure.lineSpacing + 0.05);
 				break;
 			}
 
 		}
 		update();
+		setSize(wrapFigure.lineWidth, getHeight());
 	}
 
 	@Override
@@ -115,4 +119,26 @@ public class Display extends GraphicsProgram implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 	}
 
+	@Override
+	public void componentResized(ComponentEvent e) {
+		if(wrapFigure != null) {
+			wrapFigure.setLineWidth(getWidth());
+			update();
+		}
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+
+	}
 }
