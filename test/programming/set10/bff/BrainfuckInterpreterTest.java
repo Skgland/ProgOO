@@ -40,6 +40,12 @@ public class BrainfuckInterpreterTest {
 		System.out.println(testProgramFile("hanoi.b"));
 	}
 
+	@Test
+	void test() {
+		Assertions.assertEquals("9\n8\n7\n6\n5\n4\n3\n2\n1\n0\nBESTANDEN\n",testProgramFile("test.b"));
+	}
+
+
 	String testProgramFile(String fileName){
 		try {
 			File           file           = new File(fileName);
