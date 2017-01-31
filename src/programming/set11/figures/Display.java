@@ -13,6 +13,13 @@ import java.awt.event.KeyListener;
 public class Display extends GraphicsProgram implements KeyListener, ComponentListener {
 
 	private WrapFigure wrapFigure;
+	/**
+	 * b changes the boarder
+	 * w changes the lineWidth
+	 * s changes the spacing
+	 * l changes the lineSpacing
+	 * will increase the given value when holding Shift, will decrease if not
+	 * */
 
 	@Override
 	public void init() {
