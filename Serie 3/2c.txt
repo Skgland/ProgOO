@@ -1,0 +1,16 @@
+S 
+=> add
+=> add + mult 
+=> add + mult * num 
+=> add + mult * num * num
+=> add + num * num * num
+=> mult + num * num * num
+=> num + num * num * num
+=> 2 + num * num * num
+=> 2 + 4 * num * num
+=> 2 + 4 * 5 * num
+=> 2 + 4 * 5 * 2
+
+Precedence is reflected by the fact that a multiplication
+can only have an addition as a factor if it is in brackets 
+by going over num

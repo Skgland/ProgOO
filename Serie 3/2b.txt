@@ -1,0 +1,10 @@
+
+G = (V, Σ, R, S)
+V = {S,add,mult,num}
+Σ = {1,2,3,4,5,6,7,8,9,0,+,*,(,)}
+R = {
+	S -> add ,
+	add -> add + mult | mult ,
+	mult -> mult * num | num ,
+	num -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | (add) ,
+}

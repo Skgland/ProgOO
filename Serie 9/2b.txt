@@ -1,0 +1,12 @@
+The order of evaluation in java would match the order in wich the simpleTreeToString methode moves throug the tree to generat the string.
+starting at the left most leaf.
+
+      15
+   /       \
+   7       14
+ /  \     /  \
+ 3   6   10  13
+/ \ / \ / \ /  \
+1 2 4 5 8 9 11 12
+
+it would start at 1 and finish at 15

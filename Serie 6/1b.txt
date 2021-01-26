@@ -1,0 +1,105 @@
+super:
+    this keyword is used to explicitly access method's(4) and fields of the superclass
+
+    it can also used to call a super constructor of the superclass(8)
+    this is only possible as the first statement of a constructor
+
+this:
+    for example because instance fields may be shadowed by parameters or local variables
+    the this keyword is used to explicitly access instance fields(3)
+
+    it can also be used to call another constructor of the current class(7)
+    this is only possible as the first statement of a constructor
+
+static:
+    a keyword that declares a method(5), variable(1) or inner class
+    to be referenced by the class rather than an instance
+
+    can not be used on local variables
+
+null:
+    can be used to initialize fields which need to be initialized(6),
+    but who's value is unknown at the given point of time,
+    only works with reference types
+
+    will cause a NullPointerException if an instance method or field is used
+    prior to assigning an actual value
+
+    can not be used for primitives
+
+local Variable:
+    variables which are declared inside of a method(6)
+    different method calls do not share the value of this field
+
+instance Variable:
+    variables that are referenced by a specific instance of a class
+    they are declared inside a class, but outside a method
+    and they don't have the static modifier (2)
+
+class variable:
+    variables that are referenced by a class rather than an instance
+    they are declared inside a class, but outside a method
+    and they have the static modifier (1)
+
+Constructor:
+    a special method with no declared return value
+    and always with the same name as the class it is in
+    it is used with the new keyword to create a new instance of the class
+
+    as the first statement:
+    a constructor has to either call another constructor of the current class(10) or
+    a super constructor(9), in case of the later this may be done implicitly if the superclass
+    has an accessible constructor with no parameters(11)
+
+    by the end of the constructor all final instance variables have to be initialised
+
+    if no constructor exists in a class a constructor like (11) will be inserted by the Compiler automatically
+
+public class Test1 {
+
+    public static oh = 6; //1
+
+    public Test1(){//11
+
+    }
+
+    public int ohWow(int i){
+        return oh*i;
+    }
+
+}
+
+public class Test2 extends Test1{
+
+    public i; //2
+
+    public Test2(){ //10
+        this(5); //7
+    }
+
+    public Test2(int x){ //9
+        super(); //8
+        i = x
+    }
+
+    @Override
+    public int ohWow(int i){
+        return this.i * i; //3
+    }
+
+    public int oldOhWow(int i){
+        return super.ohWoh(i); //4
+    }
+
+    public static Test1 stuff(){ //5
+        Test1 a = null; //6
+
+            if(Test1.oh!=5){
+                a = new Test1();
+            }else{
+                a = new Test2();
+            }
+
+            return a;
+    }
+}
