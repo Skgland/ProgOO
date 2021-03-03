@@ -1,0 +1,14 @@
+Explain briefly what assertions are, and what invariants/preconditions/postconditions are.
+Use the assertions that you implemented in Part A) as illustrating examples.:
+
+Assertions sind dafür da seinen Code auf Probleme zu testen,
+ich hab nur zwei Assertion in meinem Programm in Teil A verwendet,
+
+die erste überprüft im ersten Patch Konstruktor ob die generierten Patches
+innerhalb der erlaubten Dimensionen liegen.
+
+Die zweite assertion findet anwendung in der setRandomColor methode als null check des übergebenen Parameters.
+
+An keiner anderen stelle schienen mir assertion sinnvoll all anderen Methoden
+public sind und Assertion hier nicht verwendet werden sollten da sie auch abgeschaltet seien könnten,
+und man daher besser Exceptions wirft, wie im zweiten Patch Konstruktor.
